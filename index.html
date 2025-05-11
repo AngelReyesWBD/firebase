@@ -1,0 +1,1491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT Support - Mexico</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary: #0022af;
+            --secondary: #015cfe;
+            --dark: #04006C;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f0f4f8;
+        }
+        
+        .bg-primary {
+            background-color: var(--primary);
+        }
+        
+        .bg-secondary {
+            background-color: var(--secondary);
+        }
+        
+        .bg-dark {
+            background-color: var(--dark);
+        }
+        
+        .text-primary {
+            color: var(--primary);
+        }
+        
+        .text-secondary {
+            color: var(--secondary);
+        }
+        
+        .text-dark {
+            color: var(--dark);
+        }
+        
+        .border-primary {
+            border-color: var(--primary);
+        }
+        
+        .border-secondary {
+            border-color: var(--secondary);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--dark);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,34,175,0.3);
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            background-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(1,92,254,0.3);
+        }
+        
+        .btn-outline {
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+       
+        
+        .avatar-placeholder {
+            background: linear-gradient(135deg, var(--secondary), var(--dark));
+            color: white;
+            font-size: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .section-title {
+            position: relative;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            border-radius: 2px;
+        }
+           .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 12px;
+            position: relative;
+            flex-shrink: 0;
+        }
+        
+        .status-indicator::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            border-radius: 50%;
+            opacity: 0.4;
+            z-index: 0;
+        }
+        
+        .status-green {
+            background-color: #10B981;
+        }
+        
+        .status-green::after {
+            background-color: #10B981;
+            animation: pulse 2s infinite;
+        }
+        
+        .status-yellow {
+            background-color: #F59E0B;
+        }
+        
+        .status-yellow::after {
+            background-color: #F59E0B;
+            animation: pulse 2s infinite;
+        }
+        
+        .status-red {
+            background-color: #EF4444;
+        }
+        
+        .status-red::after {
+            background-color: #EF4444;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 0.6;
+            }
+            70% {
+                transform: scale(1.5);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 0;
+            }
+        }
+        
+        .service-card {
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+            animation: fadeIn 0.5s ease-out forwards;
+            opacity: 0;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .service-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgba(0, 34, 175, 0.1), 0 4px 6px -2px rgba(0, 34, 175, 0.05);
+        }
+        
+        .service-card.operational {
+            border-left-color: #10B981;
+        }
+        
+        .service-card.issues {
+            border-left-color: #F59E0B;
+        }
+        
+        .service-card.down {
+            border-left-color: #EF4444;
+        }
+        
+        .service-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            margin-right: 12px;
+            flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .service-icon::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            background: linear-gradient(45deg, var(--primary-blue), var(--secondary-blue));
+            opacity: 0.1;
+            z-index: 0;
+        }
+        
+        .service-icon svg {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .bg-custom-gradient {
+            background: linear-gradient(135deg, #0022af10 0%, #015cfe20 100%);
+        }
+        
+        .header-text {
+            background: linear-gradient(90deg, var(--dark-blue), var(--secondary-blue));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .header-text::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-blue), var(--secondary-blue));
+            border-radius: 3px;
+        }
+        
+        /* Animación para las tarjetas */
+        .service-card:nth-child(1) { animation-delay: 0.1s; }
+        .service-card:nth-child(2) { animation-delay: 0.2s; }
+        .service-card:nth-child(3) { animation-delay: 0.3s; }
+        .service-card:nth-child(4) { animation-delay: 0.4s; }
+        .service-card:nth-child(5) { animation-delay: 0.5s; }
+        .service-card:nth-child(6) { animation-delay: 0.6s; }
+        
+        /* Efecto de brillo en hover */
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transform: translateX(-100%);
+            transition: 0.6s;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        .service-card:hover::before {
+            transform: translateX(100%);
+        }
+        
+        .last-updated {
+            animation: fadeIn 0.5s ease-out 0.7s forwards;
+            opacity: 0;
+        }
+        
+        .update-dot {
+            position: relative;
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background-color: #015cfe;
+            border-radius: 50%;
+            margin-right: 6px;
+        }
+        
+        .update-dot::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background-color: #015cfe;
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: pulse 2s infinite;
+        }
+       
+    </style>
+    <style>
+         <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+    
+    .hero-gradient {
+      background: linear-gradient(135deg, #04006c 0%, #0022af 50%, #015cfe 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .hero-pattern {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath opacity='.5' d='M96 95h4v1h-4v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9zm-1 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9z'/%3E%3Cpath d='M6 5V0H5v5H0v1h5v94h1V6h94V5H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      opacity: 0.6;
+    }
+    
+    .glow {
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: rgba(70, 0, 201, 0.4);
+      filter: blur(80px);
+      z-index: 0;
+    }
+    
+    .tech-icon {
+      fill: white;
+      opacity: 0.1;
+      position: absolute;
+      z-index: 0;
+    }
+    
+    .animated-border {
+      position: relative;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(5px);
+      overflow: hidden;
+    }
+    
+    .animated-border::before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      background: linear-gradient(45deg, #00ffcc, #4600c9, #00ffcc);
+      background-size: 400%;
+      z-index: -1;
+      animation: glowing 20s linear infinite;
+      border-radius: 14px;
+    }
+    
+    @keyframes glowing {
+      0% { background-position: 0 0; }
+      50% { background-position: 400% 0; }
+      100% { background-position: 0 0; }
+    }
+    
+    
+  </style>
+    </style>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --primary: #0022af;
+            --secondary: #015cfe;
+            --dark: #04006C;
+        }
+        
+        
+        .cartoon {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            justify-items: center;
+        }
+        
+        .card-odd {
+            grid-column: span 2;
+            justify-self: center;
+        }
+        
+        .profile-card {
+            width: 240px;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(1, 92, 254, 0.15);
+            transition: all 0.4s ease;
+            position: relative;
+            background: white;
+        }
+        
+        .profile-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(1, 92, 254, 0.25);
+        }
+        
+        .card-top { 
+    height: 100px;
+    background-image: url('fondo.png');
+    background-size: cover;     /* Ajusta la imagen para que cubra todo el contenedor */
+    background-position: center; /* Centra la imagen */
+    position: relative;
+    overflow: hidden;
+}
+
+        
+        .card-top::before {
+            content: '';
+            position: absolute;
+            width: 150%;
+            height: 150%;
+            background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 70%);
+            top: -50%;
+            left: -25%;
+            animation: pulse-light 4s infinite;
+        }
+        
+        @keyframes pulse-light {
+            0% { opacity: 0.3; }
+            50% { opacity: 0.6; }
+            100% { opacity: 0.3; }
+        }
+        
+        .card-top .wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 20px;
+        }
+        
+        .profile-img-container {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            border: 4px solid white;
+            background-color: white;
+            overflow: hidden;
+            position: absolute;
+            top: 55px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            box-shadow: 0 5px 15px rgba(0, 34, 175, 0.2);
+            transition: transform 0.5s ease;
+        }
+        
+        .profile-card:hover .profile-img-container {
+            transform: translateX(-50%) scale(1.05);
+        }
+        
+        .profile-avatar {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(45deg, #f0f4ff, #e6eeff);
+        }
+        
+        .card-content {
+            padding: 60px 15px 20px;
+            text-align: center;
+        }
+        
+        .profile-name {
+            color: var(--dark);
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 4px;
+        }
+        
+        .profile-area {
+            color: #666;
+            font-size: 0.85rem;
+            margin-bottom: 15px;
+        }
+        
+        .profile-button {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(1, 92, 254, 0.2);
+        }
+        
+        .profile-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(1, 92, 254, 0.3);
+            background: linear-gradient(to right, var(--secondary), var(--primary));
+        }
+        
+        @media (max-width: 640px) {
+            .cards-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+            
+            .profile-card {
+                width: 100%;
+                max-width: 200px;
+            }
+            
+            .profile-img-container {
+                width: 80px;
+                height: 80px;
+                top: 60px;
+            }
+            
+            .card-content {
+                padding: 50px 10px 15px;
+            }
+            
+            .profile-name {
+                font-size: 1rem;
+            }
+            
+            .profile-area {
+                font-size: 0.8rem;
+                margin-bottom: 12px;
+            }
+            
+            .profile-button {
+                padding: 6px 14px;
+                font-size: 0.8rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .cards-grid {
+                gap: 12px;
+            }
+            
+            .profile-card {
+                max-width: 160px;
+            }
+            
+            .card-top {
+                height: 80px;
+            }
+            
+            .profile-img-container {
+                width: 70px;
+                height: 70px;
+                top: 45px;
+            }
+            
+            .card-content {
+                padding: 45px 8px 12px;
+            }
+            
+            .profile-name {
+                font-size: 0.9rem;
+            }
+            
+            .profile-area {
+                font-size: 0.75rem;
+                margin-bottom: 10px;
+            }
+            
+            .profile-button {
+                padding: 5px 12px;
+                font-size: 0.75rem;
+            }
+        }
+        
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+            100% { transform: translateY(0px); }
+        }
+    </style>
+    <style>
+        .gradient-text {
+            background: linear-gradient(135deg, #0022af, #015cfe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .glowCardBox {
+  width: 250px;
+  height: 300px;
+  position: relative;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 20px;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 10px 0px,
+    rgba(0, 0, 0, 0.5) 0px 2px 25px 0px;
+}
+
+.glowCard {
+  position: absolute;
+  width: 95%;
+  height: 95%;
+  background-image: url('techknow.png'); /* Cambia esta URL por la tuya */
+    background-size: cover;
+  background-position: center;
+  border-radius: 20px;
+  z-index: 5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  color: #ffffff;
+  overflow: hidden;
+  padding: 20px;
+  cursor: pointer;
+  backdrop-filter: brightness(0.8); /* Ajusta brillo si la imagen es muy clara */
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 30px 60px -12px inset,
+    rgba(0, 0, 0, 0.5) 0px 18px 36px -18px inset;
+}
+
+.glowCard .h4 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 20px;
+  font-weight: 800;
+  pointer-events: none;
+  opacity: .5;
+}
+
+.glowCard .content .h3 {
+  font-size: 18px;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+.glowCard .content p {
+  font-size: 14px;
+  line-height: 1.4em;
+}
+
+.glowCard .content {
+  transform: translateY(100%);
+  opacity: 0;
+  transition: 0.3s ease-in-out;
+}
+
+.glowCard:hover .content {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.glowCard:hover .h4 {
+  opacity: 0;
+}
+
+.glowCardBox::before {
+  content: "";
+  position: absolute;
+  width: 40%;
+  height: 150%;
+  background: #40E0D0;
+  background: -webkit-linear-gradient(to right, #04006c, #0022af, #015cfe);
+  background: linear-gradient(to right, #04006c, #0022af, #015cfe);
+  transform-origin: center;
+  animation: glowing_401 5s linear infinite;
+}
+
+@keyframes glowing_401 {
+  0% {
+    transform: rotate(0);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.slider {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.slide {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  animation: fadeLoop 12s infinite;
+  border-radius: 20px;
+}
+
+.slide1 {
+  animation-delay: 0s;
+}
+.slide2 {
+  animation-delay: 4s;
+}
+.slide3 {
+  animation-delay: 8s;
+}
+
+@keyframes fadeLoop {
+  0%, 33.33% {
+    opacity: 1;
+  }
+  33.34%, 100% {
+    opacity: 0;
+  }
+}
+.bg-section {
+  background-image: url('fondo.svg');
+  background-size: cover; /* o 'contain' dependiendo del efecto que quieras */
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+
+    </style>
+    <style>
+
+    </style>
+
+</head>
+<body>
+  <!-- Header -->
+     <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 md:px-6">
+            <div class="flex justify-between items-center py-4">
+                <nav class="fixed top-0 left-0 w-full z-50 text-white p-4 flex justify-between items-center"
+     style="background-image: conic-gradient(#015cfe, #0022af, #04006c); background-size: 100% 100%; background-repeat: no-repeat; background-color: #015cfe;">
+                <div class="flex items-center">
+                    <div class="flex items-center">
+    <img src="escudo.png" alt="Logo Izquierdo" class="h-9 mr-3">
+  </div>
+       </div>
+        <!-- Desktop Menu -->
+        <nav class="hidden md:flex items-center space-x-6">
+          <a href="#support" class="text-gray-600 hover:text-[#015cfe] font-medium transition">Support</a>
+          <a href="#status" class="text-gray-600 hover:text-[#015cfe] font-medium transition">Status</a>
+          <a href="#tech" class="text-gray-600 hover:text-[#015cfe] font-medium transition">Tech Support</a>
+          <a href="#team" class="text-gray-600 hover:text-[#015cfe] font-medium transition">Our Team</a>
+        </nav>
+
+        <!-- Mobile Menu Button -->
+        <button id="menu-toggle" class="md:hidden focus:outline-none text-[#015cfe] bg-blue-50 p-2 rounded-full hover:bg-blue-100 transition-colors">
+          <!-- Hamburger -->
+          <svg id="icon-hamburger" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
+            viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Overlay -->
+  <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden backdrop-blur-sm transition-opacity duration-300 opacity-0"></div>
+
+  <!-- Off-Canvas Mobile Menu -->
+  <div id="mobile-menu" class="fixed top-0 right-0 h-full w-[85%] max-w-xs bg-white shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out z-50 flex flex-col">
+    <!-- Header with Logo and Close Button -->
+    <div class="p-5 border-b border-gray-100 flex justify-between items-center bg-gradient-to-r from-blue-50 to-white">
+      <div class="flex items-center">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-[#0022af] to-[#015cfe] flex items-center justify-center text-white font-bold text-sm">IT</div>
+        <div class="ml-2">
+          <h2 class="text-lg font-bold text-[#04006C]">Menu</h2>
+        </div>
+      </div>
+      <button id="menu-close" class="text-gray-500 hover:text-[#015cfe] focus:outline-none bg-white rounded-full p-2 hover:bg-gray-100 transition-colors">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
+          viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+    
+    <!-- Menu Links -->
+    <nav class="flex-1 overflow-y-auto py-4">
+      <div class="px-5 space-y-1">
+        <a href="#support" class="block py-3 px-4 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-[#015cfe] font-medium transition-colors flex items-center">
+          <svg class="w-5 h-5 mr-3 text-[#015cfe]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"></path>
+          </svg>
+          Support
+        </a>
+        <a href="#status" class="block py-3 px-4 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-[#015cfe] font-medium transition-colors flex items-center">
+          <svg class="w-5 h-5 mr-3 text-[#015cfe]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          Status
+        </a>
+        <a href="#tech" class="block py-3 px-4 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-[#015cfe] font-medium transition-colors flex items-center">
+          <svg class="w-5 h-5 mr-3 text-[#015cfe]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+          </svg>
+          Tech Support
+        </a>
+        <a href="#team" class="block py-3 px-4 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-[#015cfe] font-medium transition-colors flex items-center">
+          <svg class="w-5 h-5 mr-3 text-[#015cfe]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+          </svg>
+          Our Team
+        </a>
+        <!-- Imagen debajo de "Our Team" -->
+<img src="bugs.png" alt="IT Image" class="mt-4 w-48 h-auto" />
+      </div>
+    </nav>
+    
+    <!-- Footer -->
+    <div class="p-5 border-t border-gray-100 bg-gradient-to-r from-white to-blue-50">
+      <p class="text-xs text-gray-500 text-center">© 2025 Workforce Support Mexico</p>
+    </div>
+  </div>
+
+  <!-- Page content would go here -->
+  <div class="container mx-auto p-4">
+    <!-- Your page content -->
+  </div>
+
+  <script>
+    const menuToggle = document.getElementById('menu-toggle');
+    const menuClose = document.getElementById('menu-close');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const overlay = document.getElementById('overlay');
+
+    function openMenu() {
+      mobileMenu.classList.remove('translate-x-full');
+      overlay.classList.remove('hidden');
+      // Fade in overlay
+      setTimeout(() => {
+        overlay.classList.remove('opacity-0');
+      }, 10);
+      // Prevent body scrolling
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeMenu() {
+      mobileMenu.classList.add('translate-x-full');
+      overlay.classList.add('opacity-0');
+      // Hide overlay after transition
+      setTimeout(() => {
+        overlay.classList.add('hidden');
+      }, 300);
+      // Restore body scrolling
+      document.body.style.overflow = '';
+    }
+
+    menuToggle.addEventListener('click', openMenu);
+    menuClose.addEventListener('click', closeMenu);
+    overlay.addEventListener('click', closeMenu);
+  </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93dbaf3da417525f',t:'MTc0NjkwMzY3OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+
+
+
+  <!-- Hero Section -->
+  <section class="hero-gradient min-h-[200px] md:min-h-[600px] py-16 md:py-24 relative flex items-center">
+    <!-- Background Pattern -->
+    <div class="hero-pattern"></div>
+    
+    <!-- Decorative Elements -->
+    <div class="glow top-[-300px] left-[-100px]"></div>
+    <div class="glow bottom-[-200px] right-[-150px]"></div>
+    
+    <!-- Tech Icons Background -->
+    <img src="tecno.png" alt="Icono" class="tech-icon w-24 h-24 top-5 left-[5%] absolute">
+
+    
+
+   <img src="warner.png" alt="Icono" class="tech-icon w-32 h-32 bottom-0 right-[5%] absolute">
+
+    
+   
+    
+    <div class="container mx-auto px-4 md:px-6 relative z-10">
+      <div class="flex flex-col lg:flex-row items-center justify-between gap-10">
+        <!-- Text Content -->
+        <div class="w-full lg:w-1/2 text-center lg:text-left">
+          <div class="mb-8">
+            <span class="inline-block px-4 py-1 rounded-full bg-white/10 backdrop-blur-sm text-teal-300 font-medium text-sm mb-4">
+              Professional IT Services
+            </span>
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-4">
+              Need <span class="text-transparent bg-clip-text bg-gradient-to-r from-teal-300 to-purple-400">IT Support?</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-white/90 max-w-xl mx-auto lg:mx-0">
+              Meet our friendly Mexico team ready to solve your tech problems with expertise and efficiency.
+            </p>
+          </div>
+          
+          </div>
+        </div>
+    </section>
+<!-- Service Status Section -->
+        <section id="status" class="bg-gray-50 py-12 md:py-16 mb-16">
+            <div class="container mx-auto px-4 md:px-6">
+                <div class="flex justify-between items-center mb-8">
+                    <h2 class="section-title text-2xl md:text-3xl font-bold text-[#04006C]">Service Status</h2>
+                    
+                    <span class="text-sm text-gray-500">Last updated: <span id="lastUpdated">Today, 10:30 AM</span></span>
+                </div>
+              
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                <!-- Network -->
+                <div class="service-card operational bg-white rounded-xl p-5 flex items-center justify-between shadow-sm hover:shadow-md transition relative overflow-hidden">
+                    <div class="flex items-center">
+                        <div class="service-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#0022af]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9" />
+                            </svg>
+                        </div>
+                        <div>
+                            <span class="font-semibold text-[#04006C]">Network</span>
+                            <p class="text-xs text-gray-500 mt-1">Internet & Intranet</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="status-indicator status-green mr-2"></span>
+                        <span class="text-sm font-medium text-green-600" id="networkStatusText">Operational</span>
+                    </div>
+                </div>
+                
+                <!-- Email Services -->
+                <div class="service-card operational bg-white rounded-xl p-5 flex items-center justify-between shadow-sm hover:shadow-md transition relative overflow-hidden">
+                    <div class="flex items-center">
+                        <div class="service-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#0022af]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <span class="font-semibold text-[#04006C]">Email Services</span>
+                            <p class="text-xs text-gray-500 mt-1">Outlook & Exchange</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="status-indicator status-green mr-2"></span>
+                        <span class="text-sm font-medium text-green-600" id="emailStatusText">Operational</span>
+                    </div>
+                </div>
+                
+                <!-- Cloud Storage -->
+                <div class="service-card issues bg-white rounded-xl p-5 flex items-center justify-between shadow-sm hover:shadow-md transition relative overflow-hidden">
+                    <div class="flex items-center">
+                        <div class="service-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#0022af]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <span class="font-semibold text-[#04006C]">Cloud Storage</span>
+                            <p class="text-xs text-gray-500 mt-1">OneDrive & SharePoint</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="status-indicator status-yellow mr-2"></span>
+                        <span class="text-sm font-medium text-yellow-600" id="cloudStatusText">Minor Issues</span>
+                    </div>
+                </div>
+                
+                <!-- VPN Access -->
+                <div class="service-card operational bg-white rounded-xl p-5 flex items-center justify-between shadow-sm hover:shadow-md transition relative overflow-hidden">
+                    <div class="flex items-center">
+                        <div class="service-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#0022af]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <span class="font-semibold text-[#04006C]">VPN Access</span>
+                            <p class="text-xs text-gray-500 mt-1">Remote Connection</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="status-indicator status-green mr-2"></span>
+                        <span class="text-sm font-medium text-green-600" id="vpnStatusText">Operational</span>
+                    </div>
+                </div>
+                
+                <!-- Print Services -->
+                <div class="service-card down bg-white rounded-xl p-5 flex items-center justify-between shadow-sm hover:shadow-md transition relative overflow-hidden">
+                    <div class="flex items-center">
+                        <div class="service-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#0022af]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <span class="font-semibold text-[#04006C]">Print Services</span>
+                            <p class="text-xs text-gray-500 mt-1">Network Printers</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="status-indicator status-red mr-2"></span>
+                        <span class="text-sm font-medium text-red-600" id="printStatusText">Outage</span>
+                    </div>
+                </div>
+                
+               
+            
+            <div class="mt-8 flex justify-end items-center">
+                <div class="text-sm text-[#015cfe] flex items-center">
+                    <span class="inline-block w-2 h-2 bg-[#015cfe] rounded-full mr-2 animate-ping"></span>
+                    Monitorizando en tiempo real
+                </div>
+            </div>
+        </div>
+    </div>
+        </section>
+    <!-- Main Content -->
+<main class="py-2 md:py-5">
+        <!-- Need IT Support Section -->
+        <section id="support" class="container mx-auto px-4 md:px-6 mb-16">
+            <h2 class="section-title text-2xl md:text-3xl font-bold text-[#04006C]">Contact Support</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="card bg-white shadow-md p-6 flex flex-col items-center text-center">
+                    <div class="w-16 h-16 rounded-full bg-[#0022af] bg-opacity-10 flex items-center justify-center mb-4">
+                        <i class="fas fa-phone text-[#0022af] text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-[#04006C] mb-3">Call Us</h3>
+                    <p class="text-gray-600 mb-6">Speak directly with our support team for immediate assistance</p>
+                    <a href="   tel:+8000831236">
+                    <button class="btn-primary rounded-lg py-3 px-6 font-medium w-full mt-auto">
+                        <i class="fas fa-phone mr-2"></i> Call Support
+                    </button></a>
+                </div>
+                
+                <div class="card bg-white shadow-md p-6 flex flex-col items-center text-center">
+                    <div class="w-16 h-16 rounded-full bg-[#015cfe] bg-opacity-10 flex items-center justify-center mb-4">
+                        <i class="fas fa-comment-dots text-[#015cfe] text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-[#04006C] mb-3">Chat with Sheldon</h3>
+                    <p class="text-gray-600 mb-6">Sheldon is ONE's Virtual Agent - a chatbot that helps users quickly resolve common issues or answer queries.</p>
+                    <a href="   https://wbd.service-now.com/one?id=kb_article&sysparm_article=KB0019997&table=kb_knowledge&searchTerm=sheldon">
+                    <button class="btn-secondary rounded-lg py-3 px-6 font-medium w-full mt-auto">
+                        <i class="fas fa-comment mr-2"></i> Start Chat
+                    </button></a>
+                </div>
+                
+                <div class="card bg-white shadow-md p-6 flex flex-col items-center text-center">
+                    <div class="w-16 h-16 rounded-full bg-[#04006C] bg-opacity-10 flex items-center justify-center mb-4">
+                        <i class="fas fa-envelope text-[#04006C] text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-[#04006C] mb-3">Email Us</h3>
+                    <p class="text-gray-600 mb-6">Send us an email and we'll respond within 24 hours</p>
+                    <a href="   mailto:workforce.support.mexico@wbd.com">
+                    <button class="btn-primary rounded-lg py-3 px-6 font-medium w-full mt-auto">
+                        <i class="fas fa-envelope mr-2"></i> Send Email
+                    </button></a>
+                </div>
+            </div>
+        </section>
+<!-- Image Tech Support Section -->
+        <section id="tech" class="container mx-auto px-4 md:px-6 mb-16">
+            <h2 class="section-title text-2xl md:text-3xl font-bold text-[#04006C]">Visit Us</h2>
+                     <div class="bg-section">
+                <p class="text-gray-600 mb-8">For immediate assistance, visit the TechBar on the 14th floor.</p>
+  <div class="flex flex-wrap justify-center gap-6 p-8">
+    <div class="glowCardBox" data-aos="fade-up" data-aos-duration="1000">
+      <div class="glowCard">
+        <div class="slider">
+          <img src="techknow.png" class="slide slide1" />
+          <img src="tomyjerry.png" class="slide slide2" />
+          <img src="tech2.png" class="slide slide3" />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+                </section>
+
+
+        <!-- Get Tech Support Section -->
+        <section id="tech" class="container mx-auto px-4 md:px-6 mb-16">
+            <h2 class="section-title text-2xl md:text-3xl font-bold text-[#04006C]">Get Tech Support</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="card bg-white shadow-md rounded-xl overflow-hidden">
+                    <div class="h-3 bg-gradient-to-r from-[#0022af] to-[#015cfe]"></div>
+                    <div class="p-6">
+                        <div class="w-14 h-14 rounded-full bg-[#0022af] bg-opacity-10 flex items-center justify-center mb-4">
+                            <i class="fas fa-clipboard-list text-[#0022af] text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-[#04006C] mb-3">Make a Request</h3>
+                        <p class="text-gray-600 mb-6">Find your desired Technology catalog item by browsing categories below or using the search bar abovex</p>
+                        <ul class="mb-6 space-y-2">
+                            <li class="flex items-center text-sm text-gray-600">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                Access Provisioning
+                            </li>
+                            <li class="flex items-center text-sm text-gray-600">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                Asset Management
+                            </li>
+                            <li class="flex items-center text-sm text-gray-600">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                Manage IT Service Data
+                            </li>
+                        </ul>
+                        <a href="   https://wbd.service-now.com/one?id=emp_taxonomy_topic_it&topic_id=a304ebae1b88da10f27a43b1b24bcb05">
+                        <button class="btn-primary rounded-lg py-3 px-6 font-medium w-full">
+                            Request Support
+                        </button></a>
+                    </div>
+                </div>
+                
+                <div class="card bg-white shadow-md rounded-xl overflow-hidden">
+                    <div class="h-3 bg-gradient-to-r from-[#015cfe] to-[#04006C]"></div>
+                    <div class="p-6">
+                        <div class="w-14 h-14 rounded-full bg-[#015cfe] bg-opacity-10 flex items-center justify-center mb-4">
+                            <i class="fas fa-book-open text-[#015cfe] text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-[#04006C] mb-3">Browse Knowledge</h3>
+                        <p class="text-gray-600 mb-6">Read Technology FAQs, How To's and Reference articles.</p>
+                        <ul class="mb-6 space-y-2">
+                            <li class="flex items-center text-sm text-gray-600">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                Applications and Software
+                            </li>
+                            <li class="flex items-center text-sm text-gray-600">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                FAQ
+                            </li>
+                            <li class="flex items-center text-sm text-gray-600">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                Hardware
+                            </li>
+                        </ul>
+                        <a href="   https://wbd.service-now.com/one?id=emp_taxonomy_topic_it&topic_id=e0642fee1b88da10f27a43b1b24bcbc2">
+                        <button class="btn-secondary rounded-lg py-3 px-6 font-medium w-full">
+                            View
+                        </button></a>
+                    </div>
+                </div>
+                
+                <div class="card bg-white shadow-md rounded-xl overflow-hidden">
+                    <div class="h-3 bg-gradient-to-r from-[#04006C] to-[#0022af]"></div>
+                    <div class="p-6">
+                        <div class="w-14 h-14 rounded-full bg-[#04006C] bg-opacity-10 flex items-center justify-center mb-4">
+                            <i class="fas fa-exclamation-triangle text-[#04006C] text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-[#04006C] mb-3">Report an Issue</h3>
+                        <p class="text-gray-600 mb-6">To report technology issues, please select the relevant incident form below and provide required details</p>
+                        <ul class="mb-6 space-y-2">
+                            <li class="flex items-center text-sm text-gray-600">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                Report a General Issue
+                            </li>
+                            
+                        </ul>
+                        <a href="   https://wbd.service-now.com/one?id=sc_cat_item&sys_id=417a00dc1b9975101e85106fbd4bcbcf">
+                        <button class="btn-primary rounded-lg py-3 px-6 font-medium w-full">
+                            Report Problem
+                        </button></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Team Section -->
+        <section id="team" class="bg-gray-50 py-12 md:py-16">
+            <div class="container mx-auto px-4 md:px-6">
+                <h2 class="section-title text-2xl md:text-3xl font-bold text-[#04006C]">Workforce Support Mexico Team</h2>
+                <p class="text-gray-600 mb-10 max-w-2xl">Got tech troubles? Our team’s here to help and keep things running without a hitch.</p>
+                <div class="cards-grid">
+            <!-- Tarjeta 1 (impar, centrada) -->
+<div class="profile-card card-odd floating">
+    <div class="card-top">
+        <svg class="wave" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+            <path fill="#ffffff" fill-opacity="1"
+                d="M0,192L48,176C96,160,192,128,288,128C384,128,480,160,576,176C672,192,768,192,864,176C960,160,1056,128,1152,128C1248,128,1344,160,1392,176L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z">
+            </path>
+        </svg>
+    </div>
+    <div class="profile-img-container">
+        <div class="profile-avatar overflow-hidden rounded-full w-18 h-18">
+            <img src="pablo.png" alt="Avatar de Ana García" class="w-full h-full object-cover" />
+        </div>
+    </div>
+    <div class="card-content">
+        <div class="profile-name">Pablo García</div>
+        <div class="profile-area">IT Manager</div>
+        <a href="https://teams.microsoft.com/l/chat/0/0?users=pablo.garcia@wbd.com">
+        <button class="profile-button">Contact Me</button></a>
+    </div>
+</div>
+            
+            <!-- Tarjeta 2 -->
+            <div class="profile-card">
+                <div class="card-top">
+                    <svg class="wave" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+                        <path fill="#ffffff" fill-opacity="1" d="M0,192L48,176C96,160,192,128,288,128C384,128,480,160,576,176C672,192,768,192,864,176C960,160,1056,128,1152,128C1248,128,1344,160,1392,176L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+                    </svg>
+                </div>
+                <div class="profile-img-container">
+                    <div class="profile-avatar overflow-hidden rounded-full w-18 h-18">
+            <img src="cesar.png" alt="Avatar de Ana García" class="w-full h-full object-cover" />
+        </div>
+                </div>
+                <div class="card-content">
+                    <div class="profile-name">Cesar Maldonado</div>
+                    <div class="profile-area">IT Workforce Support Technician</div>
+                    <a href="https://teams.microsoft.com/l/chat/0/0?users=cesar.maldonado@wbd.com">
+                    <button class="profile-button">Contact Me</button></a>
+                </div>
+            </div>
+            
+            <!-- Tarjeta 3 -->
+            <div class="profile-card">
+                <div class="card-top">
+                    <svg class="wave" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+                        <path fill="#ffffff" fill-opacity="1" d="M0,192L48,176C96,160,192,128,288,128C384,128,480,160,576,176C672,192,768,192,864,176C960,160,1056,128,1152,128C1248,128,1344,160,1392,176L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+                    </svg>
+                </div>
+                <div class="profile-img-container">
+                    <div class="profile-avatar overflow-hidden rounded-full w-18 h-18">
+            <img src="alberto.png" alt="Avatar de Ana García" class="w-full h-full object-cover" />
+        </div>
+                </div>
+                <div class="card-content">
+                    <div class="profile-name">Alberto Muñoz</div>
+                    <div class="profile-area">IT Workforce Support Technician</div>
+                    <a href="https://teams.microsoft.com/l/chat/0/0?users=alberto2.munoz@wbd.com">
+                    <button class="profile-button">Contact Me</button></a>
+                </div>
+            </div>
+            
+            <!-- Tarjeta 4 -->
+            <div class="profile-card">
+                <div class="card-top">
+                    <svg class="wave" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+                        <path fill="#ffffff" fill-opacity="1" d="M0,192L48,176C96,160,192,128,288,128C384,128,480,160,576,176C672,192,768,192,864,176C960,160,1056,128,1152,128C1248,128,1344,160,1392,176L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+                    </svg>
+                </div>
+                <div class="profile-img-container">
+                     <div class="profile-avatar overflow-hidden rounded-full w-18 h-18">
+            <img src="karina.png" alt="Avatar de Ana García" class="w-full h-full object-cover" />
+        </div>
+                </div>
+                <div class="card-content">
+                    <div class="profile-name">Karina Barajas</div>
+                    <div class="profile-area">IT Workforce Support Technician</div>
+                    <a href="https://teams.microsoft.com/l/chat/0/0?users=karina.martinez@wbd.com">
+                    <button class="profile-button">Contact Me</button></a>
+                </div>
+            </div>
+            
+            <!-- Tarjeta 5 -->
+            <div class="profile-card">
+                <div class="card-top">
+                    <svg class="wave" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+                        <path fill="#ffffff" fill-opacity="1" d="M0,192L48,176C96,160,192,128,288,128C384,128,480,160,576,176C672,192,768,192,864,176C960,160,1056,128,1152,128C1248,128,1344,160,1392,176L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+                    </svg>
+                </div>
+                <div class="profile-img-container">
+                     <div class="profile-avatar overflow-hidden rounded-full w-18 h-18">
+            <img src="ruben.png" alt="Avatar de Ana García" class="w-full h-full object-cover" />
+        </div>
+                </div>
+                <div class="card-content">
+                    <div class="profile-name">Ruben Bolaños</div>
+                    <div class="profile-area">IT Workforce Support Technician</div>
+                    <a href="https://teams.microsoft.com/l/chat/0/0?users=ruben.bolanos@wbd.com">
+                    <button class="profile-button">Contact Me</button></a>
+                </div>
+            </div>
+
+            <!-- Tarjeta 6 -->
+            <div class="profile-card">
+                <div class="card-top">
+                    <svg class="wave" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+                        <path fill="#ffffff" fill-opacity="1" d="M0,192L48,176C96,160,192,128,288,128C384,128,480,160,576,176C672,192,768,192,864,176C960,160,1056,128,1152,128C1248,128,1344,160,1392,176L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+                    </svg>
+                </div>
+                <div class="profile-img-container">
+                    <div class="profile-avatar overflow-hidden rounded-full w-18 h-18">
+            <img src="angel.png" alt="Avatar de Ana García" class="w-full h-full object-cover" />
+        </div>
+                </div>
+                <div class="card-content">
+                    <div class="profile-name">Angel Reyes</div>
+                    <div class="profile-area">IT Workforce Support Intern</div>
+                    <a href="https://teams.microsoft.com/l/chat/0/0?users=angel.reyes@wbdcontractor.com">
+                    <button class="profile-button">Contact Me</button></a>
+                </div>
+            </div>
+            
+            <!-- Tarjeta 5 -->
+            <div class="profile-card">
+                <div class="card-top">
+                    <svg class="wave" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+                        <path fill="#ffffff" fill-opacity="1" d="M0,192L48,176C96,160,192,128,288,128C384,128,480,160,576,176C672,192,768,192,864,176C960,160,1056,128,1152,128C1248,128,1344,160,1392,176L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+                    </svg>
+                </div>
+                <div class="profile-img-container">
+                    <div class="profile-avatar">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="var(--secondary)" class="w-14 h-14">
+                            <path fill-rule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="card-content">
+                    <div class="profile-name">Kenia Os</div>
+                    <div class="profile-area">IT Workforce Support Technician</div>
+                    <a href="https://teams.microsoft.com/l/chat/0/0?users=angel.reyes@wbdcontractor.com">
+                    <button class="profile-button">Contact Me</button> </a>
+                </div>
+            </div>
+</div>     
+                
+</div>
+</section>
+    <!-- CTA Section -->
+    <section class="bg-gradient-to-r from-[#0022af] to-[#015cfe] py-12 md:py-16">
+        <div class="container mx-auto px-4 md:px-6 text-center">
+            <h2 class="text-2xl md:text-3xl font-bold text-white mb-4">Need Immediate Assistance?</h2>
+            <p class="text-white text-opacity-90 mb-8 max-w-2xl mx-auto">Our team is available 24/7 to help you with any IT issues. Don't hesitate to reach out!</p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="tel:+8000831236">
+                <button class="bg-white text-[#04006C] px-6 py-3 rounded-lg font-semibold hover:bg-opacity-90 transition shadow-lg hover:shadow-xl">
+                    <i class="fas fa-headset mr-2"></i> Contact Support
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-[#04006C] text-white py-12">
+        <div class="container mx-auto px-4 md:px-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="md:col-span-1">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-white flex items-center justify-center text-[#04006C] font-bold text-xl mr-3">IT</div>
+                        <div>
+                            <h3 class="text-xl font-bold">IT Support</h3>
+                            <p class="text-xs text-gray-300">Mexico Team</p>
+                             <p class="text-xs text-gray-300">Workforce.Support.Mexico@wbd.com</p>
+                        </div>
+                    </div>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-white hover:text-[#015cfe] transition">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="text-white hover:text-[#015cfe] transition">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-white hover:text-[#015cfe] transition">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="#" class="text-white hover:text-[#015cfe] transition">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                         <li><a href="https://wbd.service-now.com/one?id=emp_taxonomy_topic_it&topic_id=6e465fe61b84da10f27a43b1b24bcbd4&in_context=true" class="text-sm hover:text-[#015cfe] transition">Support Portal</a></li>
+                        <li><a href="https://wbd.service-now.com/one?id=emp_taxonomy_topic_it&topic_id=e0642fee1b88da10f27a43b1b24bcbc2&in_context=true" class="text-sm hover:text-[#015cfe] transition">Knowledge Base</a></li>
+                        <li><a href="Onboarding IT 2025.pdf" class="text-sm hover:text-[#015cfe] transition">Download Onboarding Presentation</a></li>
+                        <li><a href="https://wbd.service-now.com/one?id=emp_taxonomy_topic_communications&topic_id=c69097811bc916508d722f4b234bcb06" class="text-sm hover:text-[#015cfe] transition">Security and Privacy</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Contact Hours</h3>
+                    <ul class="space-y-2">
+                        <li class="text-sm text-gray-300">Monday - Friday: 8:30 AM - 6:00 PM</li>
+                    </ul>
+                    <p class="mt-4 text-sm text-gray-300">Emergency Line: <span class="font-bold text-white">+800 083 1236</span></p>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-sm text-gray-400">
+                <p>&copy; 2025 Workforce Support Mexico. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+
+<!-- SDK Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+<!-- Tu configuración -->
+<script src="firebase-config.js"></script>
+
+<!-- Script para mostrar el estado de los servicios -->
+<script>
+  const db = firebase.database();
+
+  // Referencias a cada servicio
+  const networkRef = db.ref("network");
+  const emailRef = db.ref("email");
+  const cloudRef = db.ref("cloudStorage");
+  const vpnRef = db.ref("vpn");
+  const printRef = db.ref("print");
+
+  // Función para actualizar el estado de un servicio
+  function updateServiceStatus(ref, elementId, statusTextId) {
+    ref.on("value", (snapshot) => {
+      const status = snapshot.val();
+      const statusElement = document.getElementById(elementId);
+      const statusTextElement = document.getElementById(statusTextId);
+
+      if (status === "verde") {
+        statusElement.className = "status-indicator status-green";
+        statusTextElement.textContent = "Operational";
+        statusTextElement.className = "text-sm font-medium text-green-600";
+      } else if (status === "amarillo") {
+        statusElement.className = "status-indicator status-yellow";
+        statusTextElement.textContent = "Minor Issues";
+        statusTextElement.className = "text-sm font-medium text-yellow-600";
+      } else if (status === "rojo") {
+        statusElement.className = "status-indicator status-red";
+        statusTextElement.textContent = "Outage";
+        statusTextElement.className = "text-sm font-medium text-red-600";
+      } else {
+        statusElement.className = "status-indicator status-gray";
+        statusTextElement.textContent = "Unknown Status";
+        statusTextElement.className = "text-sm font-medium text-gray-600";
+      }
+    });
+  }
+
+  // Actualizar estado de cada servicio
+  updateServiceStatus(networkRef, "networkStatusText", "networkStatusText");
+  updateServiceStatus(emailRef, "emailStatusText", "emailStatusText");
+  updateServiceStatus(cloudRef, "cloudStatusText", "cloudStatusText");
+  updateServiceStatus(vpnRef, "vpnStatusText", "vpnStatusText");
+  updateServiceStatus(printRef, "printStatusText", "printStatusText");
+</script>
+
+
+
+
+    </html>
