@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Status Admin Panel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .status-green {
+            background-color: #10B981;
+        }
+        .status-yellow {
+            background-color: #F59E0B;
+        }
+        .status-red {
+            background-color: #EF4444;
+        }
+        .service-preview {
+            transition: all 0.3s ease;
+        }
+        .service-card {
+            position: relative;
+        }
+        .service-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            transition: all 0.3s ease;
+        }
+        .operational::after {
+            background-color: #10B981;
+        }
+        .issues::after {
+            background-color: #F59E0B;
+        }
+        .outage::after, .down::after {
+            background-color: #EF4444;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <header class="mb-10">
+            <div class="flex justify-between items-center">
+                <h1 class="text-3xl font-bold text-[#04006C]">Service Status Admin Panel</h1>
+                <button id="saveChanges" class="bg-[#0022af] text-white px-6 py-2 rounded-lg hover:bg-[#04006C] transition">
+                    Save Changes
+                </button>
+            </div>
+            <p class="text-gray-600 mt-2">Manage and update service status information</p>
+        </header>
+
+        <div class="bg-white rounded-xl shadow-md p-6 mb-8">
+            <h2 class="text-xl font-semibold text-[#04006C] mb-4">Last Updated</h2>
+            <div class="flex items-center space-x-4">
+                <button id="updateTimestamp" class="bg-[#0022af] text-white px-4 py-2 rounded-lg hover:bg-[#04006C] transition">
+                    Update to Current Time
+                </button>
+                <span class="text-gray-600">Current value: <span id="currentTimestamp" class="font-medium">Today, 10:30 AM</span></span>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Service Management Section -->
+            <div class="bg-white rounded-xl shadow-md p-6">
+                <h2 class="text-xl font-semibold text-[#04006C] mb-6">Manage Services</h2>
+                
+                <!-- Network Service -->
+                <div class="mb-8 border-b pb-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-semibold text-lg">Network</h3>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-sm text-gray-500">Status:</span>
+                            <select id="networkStatus" class="border rounded-md px-3 py-1 focus:outline-none focus:ring-2 focus:ring-[#0022af]">
+                                <option value="operational">Operational</option>
+                                <option value="issues">Issues</option>
+                                <option value="outage">Outage</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="flex flex-col space-y-2">
+                        <label class="text-sm text-gray-600">Status Text</label>
+                        <input type="text" id="networkStatusTextInput" value="Operational" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#0022af]">
+                    </div>
+                </div>
+                
+                <!-- Email Services -->
+                <div class="mb-8 border-b pb-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-semibold text-lg">Email Services</h3>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-sm text-gray-500">Status:</span>
+                            <select id="emailStatus" class="border rounded-md px-3 py-1 focus:outline-none focus:ring-2 focus:ring-[#0022af]">
+                                <option value="operational">Operational</option>
+                                <option value="issues">Issues</option>
+                                <option value="outage">Outage</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="flex flex-col space-y-2">
+                        <label class="text-sm text-gray-600">Status Text</label>
+                        <input type="text" id="emailStatusTextInput" value="Operational" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#0022af]">
+                    </div>
+                </div>
+                
+                <!-- Cloud Storage -->
+                <div class="mb-8 border-b pb-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-semibold text-lg">Cloud Storage</h3>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-sm text-gray-500">Status:</span>
+                            <select id="cloudStatus" class="border rounded-md px-3 py-1 focus:outline-none focus:ring-2 focus:ring-[#0022af]">
+                                <option value="operational">Operational</option>
+                                <option value="issues" selected>Issues</option>
+                                <option value="outage">Outage</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="flex flex-col space-y-2">
+                        <label class="text-sm text-gray-600">Status Text</label>
+                        <input type="text" id="cloudStatusTextInput" value="Minor Issues" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#0022af]">
+                    </div>
+                </div>
+                
+                <!-- VPN Access -->
+                <div class="mb-8 border-b pb-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-semibold text-lg">VPN Access</h3>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-sm text-gray-500">Status:</span>
+                            <select id="vpnStatus" class="border rounded-md px-3 py-1 focus:outline-none focus:ring-2 focus:ring-[#0022af]">
+                                <option value="operational" selected>Operational</option>
+                                <option value="issues">Issues</option>
+                                <option value="outage">Outage</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="flex flex-col space-y-2">
+                        <label class="text-sm text-gray-600">Status Text</label>
+                        <input type="text" id="vpnStatusTextInput" value="Operational" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#0022af]">
+                    </div>
+                </div>
+                
+                <!-- Print Services -->
+                <div class="mb-4">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-semibold text-lg">Print Services</h3>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-sm text-gray-500">Status:</span>
+                            <select id="printStatus" class="border rounded-md px-3 py-1 focus:outline-none focus:ring-2 focus:ring-[#0022af]">
+                                <option value="operational">Operational</option>
+                                <option value="issues">Issues</option>
+                                <option value="outage" selected>Outage</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="flex flex-col space-y-2">
+                        <label class="text-sm text-gray-600">Status Text</label>
+                        <input type="text" id="printStatusTextInput" value="Outage" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#0022af]">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Live Preview Section -->
+            <div class="bg-white rounded-xl shadow-md p-6">
+                <h2 class="text-xl font-semibold text-[#04006C] mb-6">Live Preview</h2>
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-xl font-bold text-[#04006C]">Service Status</h3>
+                        <span class="text-sm text-gray-500">Last updated: <span id="previewLastUpdated">Today, 10:30 AM</span></span>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <!-- Network Preview -->
+                        <div id="networkPreview" class="service-card operational bg-white rounded-xl p-5 flex items-center justify-between shadow-sm relative overflow-hidden">
+                            <div class="flex items-center">
+                                <div class="service-icon mr-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#0022af]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <span class="font-semibold text-[#04006C]">Network</span>
+                                    <p class="text-xs text-gray-500 mt-1">Internet & Intranet</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <span id="networkStatusIndicator" class="status-indicator status-green mr-2"></span>
+                                <span id="networkStatusTextPreview" class="text-sm font-medium text-green-600">Operational</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Email Services Preview -->
+                        <div id="emailPreview" class="service-card operational bg-white rounded-xl p-5 flex items-center justify-between shadow-sm relative overflow-hidden">
+                            <div class="flex items-center">
+                                <div class="service-icon mr-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#0022af]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <span class="font-semibold text-[#04006C]">Email Services</span>
+                                    <p class="text-xs text-gray-500 mt-1">Outlook & Exchange</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <span id="emailStatusIndicator" class="status-indicator status-green mr-2"></span>
+                                <span id="emailStatusTextPreview" class="text-sm font-medium text-green-600">Operational</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Cloud Storage Preview -->
+                        <div id="cloudPreview" class="service-card issues bg-white rounded-xl p-5 flex items-center justify-between shadow-sm relative overflow-hidden">
+                            <div class="flex items-center">
+                                <div class="service-icon mr-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#0022af]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <span class="font-semibold text-[#04006C]">Cloud Storage</span>
+                                    <p class="text-xs text-gray-500 mt-1">OneDrive & SharePoint</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <span id="cloudStatusIndicator" class="status-indicator status-yellow mr-2"></span>
+                                <span id="cloudStatusTextPreview" class="text-sm font-medium text-yellow-600">Minor Issues</span>
+                            </div>
+                        </div>
+                        
+                        <!-- VPN Access Preview -->
+                        <div id="vpnPreview" class="service-card operational bg-white rounded-xl p-5 flex items-center justify-between shadow-sm relative overflow-hidden">
+                            <div class="flex items-center">
+                                <div class="service-icon mr-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#0022af]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <span class="font-semibold text-[#04006C]">VPN Access</span>
+                                    <p class="text-xs text-gray-500 mt-1">Remote Connection</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <span id="vpnStatusIndicator" class="status-indicator status-green mr-2"></span>
+                                <span id="vpnStatusTextPreview" class="text-sm font-medium text-green-600">Operational</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Print Services Preview -->
+                        <div id="printPreview" class="service-card outage bg-white rounded-xl p-5 flex items-center justify-between shadow-sm relative overflow-hidden">
+                            <div class="flex items-center">
+                                <div class="service-icon mr-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#0022af]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <span class="font-semibold text-[#04006C]">Print Services</span>
+                                    <p class="text-xs text-gray-500 mt-1">Network Printers</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <span id="printStatusIndicator" class="status-indicator status-red mr-2"></span>
+                                <span id="printStatusTextPreview" class="text-sm font-medium text-red-600">Outage</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+      <!-- SDK Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+  <!-- Tu configuración -->
+  <script src="firebase-config.js"></script>
+
+  <!-- Script para escribir en Firebase -->
+  <script>
+    const db = firebase.database();
+    const ref = db.ref("estado");
+
+    function cambiarEstado() {
+      const nuevoEstado = document.getElementById("selector").value;
+      ref.set(nuevoEstado)
+        .then(() => alert("Estado actualizado a: " + nuevoEstado))
+        .catch((error) => alert("Error al actualizar: " + error));
+    }
+  </script>
+    </script>
+
+    <script>
+        // Initialize with current values
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set initial timestamp
+            const currentTimestamp = "Today, 10:30 AM";
+            document.getElementById('currentTimestamp').textContent = currentTimestamp;
+            document.getElementById('previewLastUpdated').textContent = currentTimestamp;
+            
+            // Set up event listeners for status changes
+            setupServiceStatusListeners('network');
+            setupServiceStatusListeners('email');
+            setupServiceStatusListeners('cloud');
+            setupServiceStatusListeners('vpn');
+            setupServiceStatusListeners('print');
+            
+            // Update timestamp button
+            document.getElementById('updateTimestamp').addEventListener('click', function() {
+                const now = new Date();
+                const options = { 
+                    hour: 'numeric', 
+                    minute: 'numeric', 
+                    hour12: true 
+                };
+                
+                // Format: Today, 10:30 AM
+                const timeString = `Today, ${now.toLocaleTimeString('en-US', options)}`;
+                
+                document.getElementById('currentTimestamp').textContent = timeString;
+                document.getElementById('previewLastUpdated').textContent = timeString;
+            });
+            
+            // Save changes button
+            document.getElementById('saveChanges').addEventListener('click', function() {
+                // In a real application, this would save to a database
+                // For this demo, we'll just show a success message
+                const button = this;
+                const originalText = button.textContent;
+                
+                button.textContent = "Changes Saved!";
+                button.classList.add('bg-green-600');
+                
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.classList.remove('bg-green-600');
+                }, 2000);
+            });
+        });
+        
+        function setupServiceStatusListeners(serviceId) {
+            // Status dropdown change
+            document.getElementById(`${serviceId}Status`).addEventListener('change', function() {
+                const status = this.value;
+                updateServiceStatus(serviceId, status);
+            });
+            
+            // Status text input change
+            document.getElementById(`${serviceId}StatusTextInput`).addEventListener('input', function() {
+                const text = this.value;
+                document.getElementById(`${serviceId}StatusTextPreview`).textContent = text;
+                
+                // Update text color based on status
+                updateStatusTextColor(serviceId);
+            });
+        }
+        
+        function updateServiceStatus(serviceId, status) {
+            const preview = document.getElementById(`${serviceId}Preview`);
+            const statusIndicator = document.getElementById(`${serviceId}StatusIndicator`);
+            
+            // Remove all status classes
+            preview.classList.remove('operational', 'issues', 'outage', 'down');
+            statusIndicator.classList.remove('status-green', 'status-yellow', 'status-red');
+            
+            // Add appropriate status class
+            preview.classList.add(status);
+            
+            // Update status indicator
+            if (status === 'operational') {
+                statusIndicator.classList.add('status-green');
+            } else if (status === 'issues') {
+                statusIndicator.classList.add('status-yellow');
+            } else if (status === 'outage') {
+                statusIndicator.classList.add('status-red');
+            }
+            
+            // Update text color
+            updateStatusTextColor(serviceId);
+        }
+        
+        function updateStatusTextColor(serviceId) {
+            const preview = document.getElementById(`${serviceId}Preview`);
+            const statusText = document.getElementById(`${serviceId}StatusTextPreview`);
+            
+            // Remove all color classes
+            statusText.classList.remove('text-green-600', 'text-yellow-600', 'text-red-600');
+            
+            // Add appropriate color class
+            if (preview.classList.contains('operational')) {
+                statusText.classList.add('text-green-600');
+            } else if (preview.classList.contains('issues')) {
+                statusText.classList.add('text-yellow-600');
+            } else if (preview.classList.contains('outage') || preview.classList.contains('down')) {
+                statusText.classList.add('text-red-600');
+            }
+        }
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93e506d2a7c25216',t:'MTc0NzAwMTYzOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="firebase-config.js"></script>
+
+<script>
+document.getElementById('saveChanges').addEventListener('click', function () {
+    const updates = {
+        lastUpdated: document.getElementById('currentTimestamp').textContent,
+        services: {
+            network: {
+                status: document.getElementById('networkStatus').value,
+                text: document.getElementById('networkStatusTextInput').value
+            },
+            email: {
+                status: document.getElementById('emailStatus').value,
+                text: document.getElementById('emailStatusTextInput').value
+            },
+            cloud: {
+                status: document.getElementById('cloudStatus').value,
+                text: document.getElementById('cloudStatusTextInput').value
+            },
+            vpn: {
+                status: document.getElementById('vpnStatus').value,
+                text: document.getElementById('vpnStatusTextInput').value
+            },
+            print: {
+                status: document.getElementById('printStatus').value,
+                text: document.getElementById('printStatusTextInput').value
+            }
+        }
+    };
+
+    firebase.database().ref("serviceStatus").set(updates)
+        .then(() => {
+            alert("Datos guardados en Firebase");
+        })
+        .catch((error) => {
+            alert("Error al guardar: " + error);
+        });
+});
+</script>
+
+</body>
+</html>
