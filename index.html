@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Estado de Servicios</title>
+</head>
+<body>
+  <h1>Estado de Servicios IT:</h1>
+  <div id="estado">Cargando...</div>
+
+  <!-- SDK Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+  <!-- Tu configuración -->
+  <script src="firebase-config.js"></script>
+
+  <!-- Script para mostrar el estado -->
+  <script>
+    const db = firebase.database();
+    const ref = db.ref("estado");
+
+    ref.on("value", (snapshot) => {
+      const estado = snapshot.val();
+      const div = document.getElementById("estado");
+      if (estado === "verde") div.textContent = "🟢 Todos los servicios están funcionando correctamente.";
+      else if (estado === "amarillo") div.textContent = "🟡 Servicios funcionando con advertencias.";
+      else if (estado === "rojo") div.textContent = "🔴 Servicios caídos. Estamos trabajando en ello.";
+      else div.textContent = "Estado desconocido.";
+    });
+  </script>
+</body>
+</html>

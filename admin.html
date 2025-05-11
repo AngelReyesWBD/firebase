@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin Estado de Servicios</title>
+</head>
+<body>
+  <h1>Panel de Administración</h1>
+
+  <select id="selector">
+    <option value="verde">🟢 Verde</option>
+    <option value="amarillo">🟡 Amarillo</option>
+    <option value="rojo">🔴 Rojo</option>
+  </select>
+
+  <button onclick="cambiarEstado()">Actualizar Estado</button>
+
+  <!-- SDK Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+  <!-- Tu configuración -->
+  <script src="firebase-config.js"></script>
+
+  <!-- Script para escribir en Firebase -->
+  <script>
+    const db = firebase.database();
+    const ref = db.ref("estado");
+
+    function cambiarEstado() {
+      const nuevoEstado = document.getElementById("selector").value;
+      ref.set(nuevoEstado)
+        .then(() => alert("Estado actualizado a: " + nuevoEstado))
+        .catch((error) => alert("Error al actualizar: " + error));
+    }
+  </script>
+</body>
+</html>
